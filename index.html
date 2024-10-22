@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Chat</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="reset.css" />
+</head>
+<body>
+    <main class="totalsite">
+        <header class="topo">
+            <img class="uol" src="img/62f625d9852515569aa51967d5654788.png">
+            <button onclick="showMenu()">
+                <ion-icon class="topUser" name="people"></ion-icon>
+            </button>
+        </header>
+        <main class="containerSite">
+            <ul>
+                <li class="entrou"><div class="content"><strong>João</strong> entra na salaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div></li>
+                <li class="saiu"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="reservada"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
+            </ul>
+        </main>
+        <footer class="rodape">
+            <div class="msg">
+                <h1 class="titleMsg">Escreva aqui</h1>
+                <input class="writeMsg" type="text" placeholder="Enviando para todos (públicosssss)">
+            </div>
+            <div class="send">
+                <ion-icon class="send" name="paper-plane-outline"></ion-icon>
+            </div>
+        </footer>
+        <div onclick="addHidden()" class="menu hidden">
+        </div>
+        <div class="userMenu">
+            <div class="titleUsers">
+                <h1>Escolha um contato para enviar mensagem</h1>
+            </div>
+            <div class="users">
+                <div class="all">
+                    <ion-icon class="allUsers" name="people"></ion-icon>
+                    <div class="selectAll">
+                        <h1>todos</h1>
+                    </div>
+                </div>
+            </div>
+            <div class="visibility">
+                <h1>Escolha a visibilidade</h1>
+            </div>
+            <div class="chooseVisibility">
+                <div class="public">
+                    <ion-icon class="locker" name="unlock"></ion-icon>
+                    <div class="choose">
+                        <h1>Publico</h1>
+                    </div>
+                </div>
+                <div class="reserved">
+                    <ion-icon class="locker" name="lock"></ion-icon>
+                    <div class="choose">
+                        <h1>Reservadamente</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+        <script src="script.js"></script>
+    </main>
+</body>
+</html>
