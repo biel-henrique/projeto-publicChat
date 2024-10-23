@@ -28,12 +28,20 @@ body {
     height: 45px;
     width: 45px;
     margin-right: 21px;
+    border: 0px;
+}
+
+.topUser:hover {
+    cursor: pointer;
 }
 
 .send {
-    height: 26px;
-    width: 26px;
-    margin-right: 18px;
+    font-size: 40px;
+    margin-right: 20px;
+}
+
+.send:hover{
+    cursor: pointer;
 }
 
 .uol {
@@ -68,12 +76,13 @@ body {
     height: 80px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .writeMsg {
     border: 0px;
     margin-top: 10px;
-    width: calc(100vw - 50px);
+    width: calc(100vw - 150px);
     padding: 10px;
 }
 
@@ -196,14 +205,6 @@ button {
     line-height: 18px;
 }
 
-.choose {
-    width: 194px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    text-align: center;
-}
-
 .public {
     display: flex;
     align-items: center;
@@ -229,6 +230,39 @@ button {
 .all {
     display: flex;
     align-items: center;
+}
+
+.oi {
+    content: '\2714'; /* Unicode do símbolo "check" */
+    color: green; /* Cor do símbolo */
+    font-size: 18px; /* Tamanho do símbolo */
+    font-weight: bold;
+}
+
+.selectUser {
+    width: 194px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.selectVisibility {
+    width: 194px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+
+.check {
+    color: green;
+    font-weight: bolder;
+    border: 1px solid green;
+    border-radius: 100px;
 }
 
 .allUsers {

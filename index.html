@@ -11,23 +11,15 @@
     <main class="totalsite">
         <header class="topo">
             <img class="uol" src="img/62f625d9852515569aa51967d5654788.png">
-            <button onclick="showMenu()">
+            <div onclick="showMenu()">
                 <ion-icon class="topUser" name="people"></ion-icon>
-            </button>
+            </div>
         </header>
         <main class="containerSite">
             <ul>
-                <li class="entrou"><div class="content"><strong>João</strong> entra na salaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</div></li>
+                <li class="entrou"><div class="content"><strong>João</strong> entra na sala</div></li>
                 <li class="saiu"><div class="content"><strong>João</strong> entra na sala</div></li>
                 <li class="reservada"><div class="content"><strong>João</strong> entra na sala</div></li>
-                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
-                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
-                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
-                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
-                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
-                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
-                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
-                <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
                 <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
                 <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
                 <li class="comum"><div class="content"><strong>João</strong> entra na sala</div></li>
@@ -46,8 +38,8 @@
                 <h1 class="titleMsg">Escreva aqui</h1>
                 <input class="writeMsg" type="text" placeholder="Enviando para todos (públicosssss)">
             </div>
-            <div class="send">
-                <ion-icon class="send" name="paper-plane-outline"></ion-icon>
+            <div onclick="sendInputMsg()" class="send">
+                <ion-icon class="send" name="paper-plane"></ion-icon>
             </div>
         </footer>
         <div onclick="addHidden()" class="menu hidden">
@@ -59,8 +51,16 @@
             <div class="users">
                 <div class="all">
                     <ion-icon class="allUsers" name="people"></ion-icon>
-                    <div class="selectAll">
-                        <h1>todos</h1>
+                    <div onclick="selectUser(this)" class="selectUser selectedParentUser">
+                        <h1 class="person">todos</h1>
+                        <ion-icon class="check selected" name="checkmark"></ion-icon>
+                    </div>
+                </div>
+                <div class="all">
+                    <ion-icon class="allUsers" name="people"></ion-icon>
+                    <div onclick="selectUser(this)" class="selectUser">
+                        <h1 class="person">eu</h1>
+                        <ion-icon class="check hidden" name="checkmark"></ion-icon>
                     </div>
                 </div>
             </div>
@@ -70,19 +70,22 @@
             <div class="chooseVisibility">
                 <div class="public">
                     <ion-icon class="locker" name="unlock"></ion-icon>
-                    <div class="choose">
-                        <h1>Publico</h1>
+                    <div onclick="selectVisibility(this)" class="selectVisibility selectedParentVisibility">
+                        <h1 class="channel">Publico</h1>
+                        <ion-icon class="check selected" name="checkmark"></ion-icon>
                     </div>
                 </div>
                 <div class="reserved">
                     <ion-icon class="locker" name="lock"></ion-icon>
-                    <div class="choose">
-                        <h1>Reservadamente</h1>
+                    <div onclick="selectVisibility(this)" class="selectVisibility">
+                        <h1 class="channel">Reservadamente</h1>
+                        <ion-icon class="check hidden" name="checkmark"></ion-icon>
                     </div>
                 </div>
             </div>
         </div>
         <script src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="script.js"></script>
     </main>
 </body>
