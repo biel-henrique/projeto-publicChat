@@ -1,121 +1,202 @@
-const link = 'https://mock-api.driven.com.br/api/v6/uol/participants/44fbc836-547c-4d7f-b1cb-1d43e5daf687'
+const initLink ="https://mock-api.driven.com.br/api/v6/uol/participants/ced8a88e-d82e-4536-a03c-b0f7f0e8304a";
+const connectLink ="https://mock-api.driven.com.br/api/v6/uol/status/ced8a88e-d82e-4536-a03c-b0f7f0e8304a";
+const msgLink ="https://mock-api.driven.com.br/api/v6/uol/messages/ced8a88e-d82e-4536-a03c-b0f7f0e8304a";
 
-function inputName() {
-    let name = prompt('Digite seu nome: ')
-    const regex = /^[A-Za-z0-9\s]+$/;
-
-    while(!regex.test(name) || name.length < 2) {
-        alert('Não utilize caracteres especiais! Seu nove deve ter pelo menos 2 letras.')
-        name = prompt('Digite seu nome: ')
-    }    
-
-    return name
-}
+const userMenu = document.querySelector(".userMenu");
+const menu = document.querySelector(".menu");
 
 let userName = {
-    name: inputName()
+    name: inputName(),
+};
+
+let whichChannel = configChannel();
+
+let whichUser = configUser();
+
+let compare = []
+
+setInterval(getName, 6000)
+
+
+function inputName() {
+  let name = prompt("Digite seu nome: ");
+  const regex = /^[A-Za-z0-9\s]+$/;
+
+  while (!regex.test(name) || name.length < 2) {
+    alert(
+      "Não utilize caracteres especiais! Seu nove deve ter pelo menos 2 letras."
+    );
+    name = prompt("Digite seu nome: ");
+  }
+
+  return name;
 }
 
-function joinServer(element) {
-    console.log(element)
-    const getUl = document.querySelector('ul')
-    let lastMessage = getUl.lastElementChild;
-    let msg = document.createElement('li')
-    msg.classList.add('entrou')
-    msg.innerHTML = `
-    <div class="content"><strong>${element}</strong> entrou na sala</div>
-    `
-    getUl.appendChild(msg)
+function joinServer() {
+  let promise = axios.get(initLink);
+  promise.then(updtJoinName);
+}
 
-    lastMessage.scrollIntoView({ behavior: "smooth" });
+function updtJoinName(element) {
+  const getUl = document.querySelector("ul");
+  let lastMessage = getUl.lastElementChild;
+  let msg = document.createElement("li");
+  msg.classList.add("entrou");
+
+  let newUsers = element.data.filter(user => 
+    user.name === userName.name
+    );
+
+  msg.innerHTML = `
+    <div class="content"><strong>${newUsers[0].name}</strong> entrou na sala</div>`;
+  getUl.appendChild(msg);
+  lastMessage.scrollIntoView({ behavior: "smooth" });
 }
 
 function postName() {
-    let promise = axios.post(link, userName)
-    promise.then(joinServer)
+  let promise = axios.post(initLink, userName);
+  promise.then(joinServer);
+  promise.catch(rename);
 }
 
-postName()
+postName();
 
-
-// function updateMsg(getUl) {
-    
-//     const lastMessage = getUl.lastElementChild;
-//     lastMessage.scrollIntoView({ behavior: "smooth" });
-// }
+function rename() {
+  alert("Esse nome já existe. Digite outro nome: ");
+  userName = {
+    name: inputName(),
+  };
+  postName();
+}
 
 function configUser() {
-
-    let whichUser = document.querySelector('.selectedParentUser .person').innerHTML
-
-    return whichUser
+  let whichUser = document.querySelector(
+    ".selectedParentUser .person"
+  ).innerHTML;
+  return whichUser;
 }
-
-let whichUser = configUser()
 
 function configChannel() {
-    
-    let whichChannel = document.querySelector('.selectedParentVisibility .channel').innerHTML
-
-    return whichChannel
+  let whichChannel = document.querySelector(
+    ".selectedParentVisibility .channel"
+  ).innerHTML;
+  return whichChannel;
 }
 
-let whichChannel = configChannel()
-
-
-const userMenu = document.querySelector('.userMenu');
-const menu = document.querySelector('.menu')
-
 function showMenu() {
-    menu.classList.remove('hidden')
-    userMenu.classList.add('show')
+  menu.classList.remove("hidden");
+  userMenu.classList.add("show");
 }
 
 function addHidden() {
-    menu.classList.add('hidden')
-    userMenu.classList.remove('show')
+  menu.classList.add("hidden");
+  userMenu.classList.remove("show");
 }
 
 function selectUser(element) {
-    const previewSelected = document.querySelector('.selectUser .selected')
-    const parentPreview = previewSelected.parentNode
-    const child = element.lastElementChild;
+  const previewSelected = document.querySelector(".selectUser .selected");
+  const parentPreview = previewSelected.parentNode;
+  const child = element.lastElementChild;
 
-    if(previewSelected != null) {
-        previewSelected.classList.add('hidden')
-        previewSelected.classList.remove('selected')
-        parentPreview.classList.remove('selectedParentUser')
-    }
-    child.classList.remove('hidden')
-    child.classList.add('selected')
-    element.classList.add('selectedParentUser')
+  if (previewSelected != null) {
+    previewSelected.classList.add("hidden");
+    previewSelected.classList.remove("selected");
+    parentPreview.classList.remove("selectedParentUser");
+  }
+  child.classList.remove("hidden");
+  child.classList.add("selected");
+  element.classList.add("selectedParentUser");
 
-    configUser()
+  configUser();
 }
 
 function selectVisibility(element) {
-    const previewSelected = document.querySelector('.selectVisibility .selected')
-    const parentPreview = previewSelected.parentNode
-    const child = element.lastElementChild;
+  const previewSelected = document.querySelector(".selectVisibility .selected");
+  const parentPreview = previewSelected.parentNode;
+  const child = element.lastElementChild;
 
-    if(previewSelected != null) {
-        previewSelected.classList.add('hidden')
-        previewSelected.classList.remove('selected')
-        parentPreview.classList.remove('selectedParentVisibility')
-    }
-    child.classList.remove('hidden')
-    child.classList.add('selected')
-    element.classList.add('selectedParentVisibility')
+  if (previewSelected != null) {
+    previewSelected.classList.add("hidden");
+    previewSelected.classList.remove("selected");
+    parentPreview.classList.remove("selectedParentVisibility");
+  }
+  child.classList.remove("hidden");
+  child.classList.add("selected");
+  element.classList.add("selectedParentVisibility");
 
-    configChannel()
+  configChannel();
 }
 
 function sendInputMsg() {
-    let msg = document.querySelector('.writeMsg').value
+    let msg = document.querySelector(".writeMsg").value;
 
-    if(msg != "") {
-
-    }else {
-        alert('O campo está vazio. Escreva uma mensagem!')
+    if(msg === '') {
+        alert("O campo está vazio. Escreva uma mensagem!");
+        return
     }
+
+    let objMessage = {
+	to: whichUser,
+	text: msg,
+	type: whichChannel
+    }
+
+    let promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages/82d10093-a7a9-4968-b22b-00efc880d42d', objMessage)
+    console.log(promise)
+    promise.then(updtFeed)
+}
+
+function updtFeed(element) {
+    console.log(element)
+    // let promise = axios.get(msgLink)
+    // promise.then(filterMsg)
+}
+
+// function filterMsg(element) {
+//     let to = element.data.
+// }
+
+function getName() {
+    let promise = axios.get(initLink)
+    promise.then(addUsersMenu)
+}
+
+function addUsersMenu(element) {
+    const getDiv = document.querySelector('.users')
+    
+    let content = ''
+
+    let newUsers = element.data.filter(user => 
+        !compare.includes(user.name) && user.name !== userName.name)
+
+    newUsers.forEach(user => {
+        compare.push(user.name)
+
+        if(user.name === whichUser) {
+            content = document.createElement('div')
+            content.classList.add('all')
+            content.innerHTML = `
+            <div class="all">
+                <ion-icon class="allUsers" name="people"></ion-icon>
+                <div onclick="selectUser(this)" class="selectUser selectedParentUser">
+                    <h1 class="person">${user.name}</h1>
+                    <ion-icon class="check selected" name="checkmark"></ion-icon>
+                </div>
+            </div>
+            `                
+            getDiv.appendChild(content)
+        }else{
+            content = document.createElement('div')
+            content.classList.add('all')
+            content.innerHTML = `
+            <ion-icon class="allUsers" name="people"></ion-icon>
+            <div onclick="selectUser(this)" class="selectUser">
+                <h1 class="person">${user.name}</h1>
+                <ion-icon class="check hidden" name="checkmark"></ion-icon>
+            </div>
+            `
+                
+            getDiv.appendChild(content)
+            }
+        })
 }
