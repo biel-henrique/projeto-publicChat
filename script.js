@@ -9,19 +9,14 @@ let userName = {
     name: inputName(),
 };
 
-let whichChannel = configChannel();
-
-let whichUser = configUser();
-
 let compare = []
 
 setInterval(getName, 6000)
 
-
 function inputName() {
   let name = prompt("Digite seu nome: ");
   const regex = /^[A-Za-z0-9\s]+$/;
-
+  
   while (!regex.test(name) || name.length < 2) {
     alert(
       "Não utilize caracteres especiais! Seu nove deve ter pelo menos 2 letras."
@@ -83,6 +78,17 @@ function configChannel() {
   return whichChannel;
 }
 
+function updtPlaceHolder(user, channel) {
+  let placeHolder = document.querySelector('.writeMsg')
+  if(channel === 'Publico' && user != 'Todos') {
+    placeHolder.placeholder = `Enviando para ${user} (Público)`
+  }else if(channel === 'Reservado' && user != 'Todos') {
+    placeHolder.placeholder = `Enviando para ${user} (Reservado)`
+  }else {
+    placeHolder.placeholder = 'Enviando para todos (Público)'
+  }
+}
+
 function showMenu() {
   menu.classList.remove("hidden");
   userMenu.classList.add("show");
@@ -106,8 +112,10 @@ function selectUser(element) {
   child.classList.remove("hidden");
   child.classList.add("selected");
   element.classList.add("selectedParentUser");
-
-  configUser();
+  
+  let whichUser = configUser();
+  let whichChannel = configChannel()
+  updtPlaceHolder(whichUser,whichChannel)
 }
 
 function selectVisibility(element) {
@@ -124,15 +132,18 @@ function selectVisibility(element) {
   child.classList.add("selected");
   element.classList.add("selectedParentVisibility");
 
-  configChannel();
+  let whichUser = configUser();
+  let whichChannel = configChannel()
+  updtPlaceHolder(whichUser,whichChannel)
 }
 
 function sendInputMsg() {
-    let msg = document.querySelector(".writeMsg").value;
+    let msgInput = document.querySelector(".writeMsg");
+    let msg = msgInput.value
 
-    if(msg === '') {
-        alert("O campo está vazio. Escreva uma mensagem!");
-        return
+    if(!msg) {
+      alert("O campo está vazio. Escreva uma mensagem!");
+      return
     }
 
     let objMessage = {
@@ -141,9 +152,11 @@ function sendInputMsg() {
 	type: whichChannel
     }
 
-    let promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages/82d10093-a7a9-4968-b22b-00efc880d42d', objMessage)
+    let promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages/ced8a88e-d82e-4536-a03c-b0f7f0e8304a', objMessage)
     console.log(promise)
     promise.then(updtFeed)
+
+    msgInput.value = ''
 }
 
 function updtFeed(element) {
@@ -162,20 +175,21 @@ function getName() {
 }
 
 function addUsersMenu(element) {
-    const getDiv = document.querySelector('.users')
-    
-    let content = ''
+  const getDiv = document.querySelector(".users");
 
-    let newUsers = element.data.filter(user => 
-        !compare.includes(user.name) && user.name !== userName.name)
+  let content = "";
 
-    newUsers.forEach(user => {
-        compare.push(user.name)
+  let newUsers = element.data.filter(
+    (user) => !compare.includes(user.name) && user.name != userName.name
+  );
 
-        if(user.name === whichUser) {
-            content = document.createElement('div')
-            content.classList.add('all')
-            content.innerHTML = `
+  newUsers.forEach((user) => {
+    compare.push(user.name);
+
+    if(user.name === whichUser) {
+      content = document.createElement("div");
+      content.classList.add("all");
+      content.innerHTML = `
             <div class="all">
                 <ion-icon class="allUsers" name="people"></ion-icon>
                 <div onclick="selectUser(this)" class="selectUser selectedParentUser">
@@ -183,20 +197,21 @@ function addUsersMenu(element) {
                     <ion-icon class="check selected" name="checkmark"></ion-icon>
                 </div>
             </div>
-            `                
-            getDiv.appendChild(content)
-        }else{
-            content = document.createElement('div')
-            content.classList.add('all')
-            content.innerHTML = `
+            `;
+      getDiv.appendChild(content);
+    }else {
+      content = document.createElement("div");
+      content.classList.add("all");
+      content.innerHTML = `
+          <div class="all">
             <ion-icon class="allUsers" name="people"></ion-icon>
             <div onclick="selectUser(this)" class="selectUser">
                 <h1 class="person">${user.name}</h1>
                 <ion-icon class="check hidden" name="checkmark"></ion-icon>
             </div>
-            `
-                
-            getDiv.appendChild(content)
-            }
-        })
+          </div>
+            `;
+      getDiv.appendChild(content);
+    }
+  });
 }
