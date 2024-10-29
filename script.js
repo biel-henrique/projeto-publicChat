@@ -1,6 +1,6 @@
-const initLink ="https://mock-api.driven.com.br/api/v6/uol/participants/0b620a78-87d3-4bf4-8b93-02e40d6957db";
-const connectLink ="https://mock-api.driven.com.br/api/v6/uol/status/0b620a78-87d3-4bf4-8b93-02e40d6957db";
-const msgLink ="https://mock-api.driven.com.br/api/v6/uol/messages/0b620a78-87d3-4bf4-8b93-02e40d6957db";
+const initLink ="https://mock-api.driven.com.br/api/v6/uol/participants/81c2e9ee-99cc-4657-a148-4d7ee5a53af8";
+const connectLink ="https://mock-api.driven.com.br/api/v6/uol/status/81c2e9ee-99cc-4657-a148-4d7ee5a53af8";
+const msgLink ="https://mock-api.driven.com.br/api/v6/uol/messages/81c2e9ee-99cc-4657-a148-4d7ee5a53af8";
 
 let userName = {
     name: inputName(),
@@ -33,9 +33,9 @@ function inputName() {
   let name = prompt("Digite seu nome: ");
   const regex = /^[A-Za-z0-9\s]+$/;
   
-  while (!regex.test(name) || name.length < 2) {
+  while (!regex.test(name) || name.length < 2 || name.length > 16) {
     alert(
-      "Não utilize caracteres especiais! Seu nove deve ter pelo menos 2 letras."
+      "Não utilize caracteres especiais. Seu nove deve ter pelo menos 2 letras e no máximo 16!"
     );
     name = prompt("Digite seu nome: ");
   }
@@ -81,26 +81,22 @@ function addUsersMenu(element) {
       content = document.createElement("div");
       content.classList.add("all");
       content.innerHTML = `
-            <div class="all">
                 <ion-icon class="allUsers" name="people"></ion-icon>
                 <div onclick="selectUser(this)" class="selectUser selectedParentUser">
                     <h1 class="person">${user.name}</h1>
                     <ion-icon class="check selected" name="checkmark"></ion-icon>
                 </div>
-            </div>
             `;
       getDiv.appendChild(content);
     }else {
       content = document.createElement("div");
       content.classList.add("all");
       content.innerHTML = `
-          <div class="all">
             <ion-icon class="allUsers" name="people"></ion-icon>
             <div onclick="selectUser(this)" class="selectUser">
                 <h1 class="person">${user.name}</h1>
                 <ion-icon class="check hidden" name="checkmark"></ion-icon>
             </div>
-          </div>
             `;
       getDiv.appendChild(content);
     }
