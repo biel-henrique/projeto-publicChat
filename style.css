@@ -120,11 +120,11 @@ li {
     min-height: 40px;
 }
 
-.entrou, .saiu {
+.joinExit {
     background-color: #DCDCDC;
 }
 
-.reservada {
+.private {
     background-color: #FFDEDE;
 }
 
@@ -133,7 +133,7 @@ li {
     overflow-wrap: break-word;
 }
 
-.comum {
+.common {
     background-color: #FFFFFF;
 }
 

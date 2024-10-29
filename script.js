@@ -1,17 +1,33 @@
-const initLink ="https://mock-api.driven.com.br/api/v6/uol/participants/ced8a88e-d82e-4536-a03c-b0f7f0e8304a";
-const connectLink ="https://mock-api.driven.com.br/api/v6/uol/status/ced8a88e-d82e-4536-a03c-b0f7f0e8304a";
-const msgLink ="https://mock-api.driven.com.br/api/v6/uol/messages/ced8a88e-d82e-4536-a03c-b0f7f0e8304a";
-
-const userMenu = document.querySelector(".userMenu");
-const menu = document.querySelector(".menu");
+const initLink ="https://mock-api.driven.com.br/api/v6/uol/participants/c4f64101-4610-46d8-b267-c7d2b80d44ca";
+const connectLink ="https://mock-api.driven.com.br/api/v6/uol/status/c4f64101-4610-46d8-b267-c7d2b80d44ca";
+const msgLink ="https://mock-api.driven.com.br/api/v6/uol/messages/c4f64101-4610-46d8-b267-c7d2b80d44ca";
 
 let userName = {
     name: inputName(),
 };
 
-let compare = []
+let compareMsg = new Set ();
 
-setInterval(getName, 6000)
+function checkStatus() {
+  let objName = {
+    name: userName.name,
+  }
+  let promise = axios.post(connectLink, objName);
+}
+
+function showMenu() {
+  const userMenu = document.querySelector(".userMenu");
+  const menu = document.querySelector(".menu");
+  menu.classList.remove("hidden");
+  userMenu.classList.add("show");
+}
+
+function removeMenu() {
+  const userMenu = document.querySelector(".userMenu");
+  const menu = document.querySelector(".menu");
+  menu.classList.add("hidden");
+  userMenu.classList.remove("show");
+}
 
 function inputName() {
   let name = prompt("Digite seu nome: ");
@@ -27,34 +43,10 @@ function inputName() {
   return name;
 }
 
-function joinServer() {
-  let promise = axios.get(initLink);
-  promise.then(updtJoinName);
-}
-
-function updtJoinName(element) {
-  const getUl = document.querySelector("ul");
-  let lastMessage = getUl.lastElementChild;
-  let msg = document.createElement("li");
-  msg.classList.add("entrou");
-
-  let newUsers = element.data.filter(user => 
-    user.name === userName.name
-    );
-
-  msg.innerHTML = `
-    <div class="content"><strong>${newUsers[0].name}</strong> entrou na sala</div>`;
-  getUl.appendChild(msg);
-  lastMessage.scrollIntoView({ behavior: "smooth" });
-}
-
 function postName() {
   let promise = axios.post(initLink, userName);
-  promise.then(joinServer);
   promise.catch(rename);
 }
-
-postName();
 
 function rename() {
   alert("Esse nome já existe. Digite outro nome: ");
@@ -62,6 +54,57 @@ function rename() {
     name: inputName(),
   };
   postName();
+}
+
+function getName() {
+  let promise = axios.get(initLink)
+  promise.then(addUsersMenu)
+}
+
+function addUsersMenu(element) {
+  console.log(element.data)
+  const getDiv = document.querySelector(".users");
+  let whichUser = configUser()
+  let content = "";
+
+  while (getDiv.children.length > 1) {
+    getDiv.removeChild(getDiv.lastChild);
+  }
+
+  let newUsers = element.data.filter(
+    (user) => user.name != userName.name
+  );
+
+  newUsers.forEach((user) => {
+
+    if(user.name === whichUser) {
+      content = document.createElement("div");
+      content.classList.add("all");
+      content.innerHTML = `
+            <div class="all">
+                <ion-icon class="allUsers" name="people"></ion-icon>
+                <div onclick="selectUser(this)" class="selectUser selectedParentUser">
+                    <h1 class="person">${user.name}</h1>
+                    <ion-icon class="check selected" name="checkmark"></ion-icon>
+                </div>
+            </div>
+            `;
+      getDiv.appendChild(content);
+    }else {
+      content = document.createElement("div");
+      content.classList.add("all");
+      content.innerHTML = `
+          <div class="all">
+            <ion-icon class="allUsers" name="people"></ion-icon>
+            <div onclick="selectUser(this)" class="selectUser">
+                <h1 class="person">${user.name}</h1>
+                <ion-icon class="check hidden" name="checkmark"></ion-icon>
+            </div>
+          </div>
+            `;
+      getDiv.appendChild(content);
+    }
+  });
 }
 
 function configUser() {
@@ -87,16 +130,6 @@ function updtPlaceHolder(user, channel) {
   }else {
     placeHolder.placeholder = 'Enviando para todos (Público)'
   }
-}
-
-function showMenu() {
-  menu.classList.remove("hidden");
-  userMenu.classList.add("show");
-}
-
-function addHidden() {
-  menu.classList.add("hidden");
-  userMenu.classList.remove("show");
 }
 
 function selectUser(element) {
@@ -141,77 +174,97 @@ function sendInputMsg() {
     let msgInput = document.querySelector(".writeMsg");
     let msg = msgInput.value
 
+    let whichUser = configUser();
+    let whichChannel = configChannel();
+
+    let renameChanel = ''
+
+    if(whichChannel === 'Publico') {
+      renameChanel = 'message'
+    }else {
+      renameChanel = 'private_message'
+    }
+
     if(!msg) {
       alert("O campo está vazio. Escreva uma mensagem!");
       return
     }
 
     let objMessage = {
-	to: whichUser,
-	text: msg,
-	type: whichChannel
+    from: userName.name,
+	  to: whichUser,
+	  text: msg,
+	  type: renameChanel
     }
 
-    let promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages/ced8a88e-d82e-4536-a03c-b0f7f0e8304a', objMessage)
-    console.log(promise)
-    promise.then(updtFeed)
+    let promise = axios.post(msgLink, objMessage)
+    promise.catch(errorText)
 
     msgInput.value = ''
 }
 
+function errorText() {
+  alert('Você foi desconectado. A pagina será atualizada!')
+  window.location.reload()
+}
+
+function getChatBox() {
+  let promise = axios.get(msgLink)
+  promise.then(updtFeed)
+}
+
+function justArrived(msg, updtChat, i, getUl, lastMessage) {
+  msg.classList.add('joinExit');
+  msg.innerHTML = `
+    <div class="content"><span style="color: gray;">(${updtChat[i].time}) </span><strong>${updtChat[i].from}</strong> ${updtChat[i].text}</div>`;
+  getUl.appendChild(msg);
+  if(lastMessage != null) {
+    lastMessage.scrollIntoView({ behavior: "smooth" }); 
+  }
+}
+
+function loadMessages(msg, char, updtChat, i, getUl, lastMessage) {
+  msg.classList.add(char);
+  msg.innerHTML = `
+    <div class="content"><span style="color: gray;">(${updtChat[i].time}) </span><strong>${updtChat[i].from}</strong> para <strong>${updtChat[i].to}</strong>: ${updtChat[i].text}</div>`;
+  getUl.appendChild(msg);
+  if(lastMessage != null) {
+    lastMessage.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
 function updtFeed(element) {
-    console.log(element)
-    // let promise = axios.get(msgLink)
-    // promise.then(filterMsg)
-}
+  const getUl = document.querySelector("ul");
 
-// function filterMsg(element) {
-//     let to = element.data.
-// }
-
-function getName() {
-    let promise = axios.get(initLink)
-    promise.then(addUsersMenu)
-}
-
-function addUsersMenu(element) {
-  const getDiv = document.querySelector(".users");
-
-  let content = "";
-
-  let newUsers = element.data.filter(
-    (user) => !compare.includes(user.name) && user.name != userName.name
+  let updtChat = element.data.filter(
+    (user) => user.from === userName.name || user.to === userName.name || user.to === 'Todos' || user.type === 'message'
   );
 
-  newUsers.forEach((user) => {
-    compare.push(user.name);
+  for(let i = 0; i < updtChat.length; i++) {
+    let messageKey = `${updtChat[i].from}-${updtChat[i].to}-${updtChat[i].text}-${updtChat[i].time}`;
 
-    if(user.name === whichUser) {
-      content = document.createElement("div");
-      content.classList.add("all");
-      content.innerHTML = `
-            <div class="all">
-                <ion-icon class="allUsers" name="people"></ion-icon>
-                <div onclick="selectUser(this)" class="selectUser selectedParentUser">
-                    <h1 class="person">${user.name}</h1>
-                    <ion-icon class="check selected" name="checkmark"></ion-icon>
-                </div>
-            </div>
-            `;
-      getDiv.appendChild(content);
-    }else {
-      content = document.createElement("div");
-      content.classList.add("all");
-      content.innerHTML = `
-          <div class="all">
-            <ion-icon class="allUsers" name="people"></ion-icon>
-            <div onclick="selectUser(this)" class="selectUser">
-                <h1 class="person">${user.name}</h1>
-                <ion-icon class="check hidden" name="checkmark"></ion-icon>
-            </div>
-          </div>
-            `;
-      getDiv.appendChild(content);
+    if(!compareMsg.has(messageKey)) {
+      let lastMessage = getUl.lastElementChild;
+      let msg = document.createElement("li");
+
+      if(updtChat[i].type === 'status'){
+        justArrived(msg, updtChat, i, getUl, lastMessage)
+      }else if(updtChat[i].type === 'private_message' && updtChat[i].to != 'Todos') {
+        loadMessages(msg, char = 'private', updtChat, i, getUl, lastMessage)
+      }else {
+        loadMessages(msg, char = 'common', updtChat, i, getUl, lastMessage)
+      }
+      getUl.appendChild(msg);
+      compareMsg.add(messageKey)
     }
-  });
+    
+  }
 }
+
+setInterval(checkStatus, 5000)
+
+setInterval(getName, 10000)
+
+postName();
+
+setInterval(getChatBox, 3000)
