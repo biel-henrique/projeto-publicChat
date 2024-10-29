@@ -1,6 +1,6 @@
-const initLink ="https://mock-api.driven.com.br/api/v6/uol/participants/c4f64101-4610-46d8-b267-c7d2b80d44ca";
-const connectLink ="https://mock-api.driven.com.br/api/v6/uol/status/c4f64101-4610-46d8-b267-c7d2b80d44ca";
-const msgLink ="https://mock-api.driven.com.br/api/v6/uol/messages/c4f64101-4610-46d8-b267-c7d2b80d44ca";
+const initLink ="https://mock-api.driven.com.br/api/v6/uol/participants/0b620a78-87d3-4bf4-8b93-02e40d6957db";
+const connectLink ="https://mock-api.driven.com.br/api/v6/uol/status/0b620a78-87d3-4bf4-8b93-02e40d6957db";
+const msgLink ="https://mock-api.driven.com.br/api/v6/uol/messages/0b620a78-87d3-4bf4-8b93-02e40d6957db";
 
 let userName = {
     name: inputName(),
