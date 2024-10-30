@@ -1,6 +1,6 @@
-const initLink ="https://mock-api.driven.com.br/api/v6/uol/participants/81c2e9ee-99cc-4657-a148-4d7ee5a53af8";
-const connectLink ="https://mock-api.driven.com.br/api/v6/uol/status/81c2e9ee-99cc-4657-a148-4d7ee5a53af8";
-const msgLink ="https://mock-api.driven.com.br/api/v6/uol/messages/81c2e9ee-99cc-4657-a148-4d7ee5a53af8";
+const initLink ="https://mock-api.driven.com.br/api/v6/uol/participants/b898fc0b-16b8-45f9-912e-7ababdc3308d";
+const connectLink ="https://mock-api.driven.com.br/api/v6/uol/status/b898fc0b-16b8-45f9-912e-7ababdc3308d";
+const msgLink ="https://mock-api.driven.com.br/api/v6/uol/messages/b898fc0b-16b8-45f9-912e-7ababdc3308d";
 
 let userName = {
     name: inputName(),
@@ -64,8 +64,12 @@ function getName() {
 function addUsersMenu(element) {
   console.log(element.data)
   const getDiv = document.querySelector(".users");
+  let check = document.querySelector('.check')
+  let people = document.querySelector('.allPeople')
   let whichUser = configUser()
   let content = "";
+
+  console.log(whichUser)
 
   while (getDiv.children.length > 1) {
     getDiv.removeChild(getDiv.lastChild);
@@ -104,10 +108,19 @@ function addUsersMenu(element) {
 }
 
 function configUser() {
+  let allPeople = document.querySelector('.allPeople')
   let whichUser = document.querySelector(
     ".selectedParentUser .person"
-  ).innerHTML;
-  return whichUser;
+  );
+
+  if(whichUser === null) {
+    console.log('entrou')
+    allPeople.classList.add('selectedParentUser')
+    allPeople.lastElementChild.classList.remove('hidden')
+    allPeople.lastElementChild.classList.add('selected')
+    return allPeople.innerHTML
+  }
+  return whichUser.innerHTML;
 }
 
 function configChannel() {
@@ -257,9 +270,9 @@ function updtFeed(element) {
   }
 }
 
-setInterval(checkStatus, 5000)
+setInterval(checkStatus, 1000)
 
-setInterval(getName, 10000)
+setInterval(getName, 2000)
 
 postName();
 
